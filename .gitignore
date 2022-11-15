@@ -1,0 +1,7 @@
+
+aggregator/__pycache__
+housing_aggregator/__pycache__
+housing_aggregator/migrations/__pycache__
+housing_aggregator/migrations
+housing_aggregator/templatetags/__pycache__
+db.sqlite3
