@@ -1,37 +1,99 @@
 {% extends 'housing_aggregator/base.html' %}
+{% load housing_aggregator_tags %}
 {% block content %}
 <div class="container p-5">
-    <div class="container border p-5 my-5 rounded">
-        Place for filters
-    </div>
-    <div class="container border p-5 my-5 rounded">
-        <div class="container border rounded p-2 my-3">
-            Place for pagination
-        </div>
-        <div class="container">
-            {% for ad in page_obj %}
-                {{ ad.title }}<br>
-            {% endfor %}
-        </div>
-        <div class="container border rounded p-2 my-3">
-            <div class="pagination">
-                <span class="step-links">
-                    {% if page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                    {% endif %}
+  <div class="container p-5 my-5 rounded-2 shadow bg-white">
+    Place for filters
+  </div>
+  <div class="container p-5 my-5 rounded-2 shadow bg-white">
+    <div class="container">
+      <ul class="list-group">
+        {% for ad in page_obj %}
+        <!-- <li class="list-group-item list-group-item-action"> -->
+          <article class="card my-2">
+                <!-- <div class="card-header"> -->
+                <!--   <div class="row"> -->
+                <!--     <div class="col-md-2"> -->
+                <!--       {{ ad.category }} -->
+                <!--     </div> -->
+                <!--     <div class="col-md-10"> -->
+                <!--       {{ ad.title }} -->
+                <!--     </div> -->
+                <!--   </div> -->
+                <!-- </div> -->
+                <div class="card-body" >
+                  <div class="row g-0">
+                    <div class="col-md-3">
+                      <!-- carousel -->
+                      {% images ad.images as images_list %}
+                      <!-- <img src="{{ images_list.0 }}" class="img-fluid rounded"> -->
 
-                    <span class="current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                    </span>
-
-                    {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">next</a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
-                </span>
-            </div>
-        </div>
+                      <div id="carouselApartment-{{ ad.pk }}" class="carousel slide" data-interval="false">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <img src="{{ images_list.0 }}" class="d-block w-100 rounded" style="height: 200px; object-fit: cover;">
+                          </div>
+                          {% with rest_images=images_list|slice:"1:" %}
+                          {% for image in rest_images %}
+                          <div class="carousel-item">
+                            <img src="{{ image }}" class="d-block w-100 rounded" style="height: 200px; object-fit: cover;">
+                          </div>
+                          {% endfor %}
+                          {% endwith %}
+                          <button class="carousel-control-prev" type="button" data-bs-target="#carouselApartment-{{ ad.pk }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                          </button>
+                          <button class="carousel-control-next" type="button" data-bs-target="#carouselApartment-{{ ad.pk }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-9 p-3" style="transform: rotate(0)">
+                      <div class="row">
+                        <div class="col-md-9">
+                          <h5 class="card-title">{{ ad.title }}</h5>
+                          <p class="card-text text-muted">{{ ad.description|truncatewords:15 }}</p>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="row-md-8">
+                          Hello 
+                          </div>
+                          <div class="row-md-4">
+                          <a href="{{ ad.ad_url }}" class="btn btn-primary btn-sm stretched-link" target="_blank">На страницу объявления</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+              </div>
+          </article>
+        <!-- </li> -->
+        {% endfor %}
+      </ul>
     </div>
+    <div class="container border rounded-2 p-2 my-3">
+      <div class="pagination">
+        <span class="step-links">
+          {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+          {% endif %}
+
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+
+          {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
