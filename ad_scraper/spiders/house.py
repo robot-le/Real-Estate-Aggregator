@@ -1,5 +1,5 @@
 from datetime import datetime
-from ..items import HousingItems
+from ad_scraper.items import HousingItems
 import scrapy
 
 
@@ -50,15 +50,6 @@ class HouseSpider(scrapy.Spider):
                 continue
             additional[f'''{param}'''] = row.xpath('./div[2]/text()').get().strip()
 
-        rental_period = additional.get('Период аренды')
-
-        if rental_period is not None and rental_period.lower().strip() == 'посуточно':
-            items['daily'] = True
-        elif rental_period is None:
-            items['daily'] = None
-        else:
-            items['daily'] = False
-
         items['site'] = 'house.kg'
         items['category'] = response.meta.get('category')
         items['title'] =  response.xpath('//title/text()').get()
@@ -68,19 +59,27 @@ class HouseSpider(scrapy.Spider):
         items['parse_datetime'] = datetime.now()
         items['ad_url'] = response.url
         items['address'] = response.meta.get('address')
-        # items['additional'] = '\n'.join([f'{key}: {value}' for key, value in additional.items()])
         items['additional'] = additional
         images = response.xpath('//div[@class="fotorama"]/a/@data-full').getall()
         items['images'] = images
         # items['price_usd'] = response.xpath('//div[@class="price-dollar"]/text()').get().replace('$', '').replace(' ', '')
-        items['rooms'] = response.meta.get('rooms')
-        # items['upload_time'] = None
+        items['rooms'] = None
+        rooms = response.meta.get('rooms')
+        if rooms is not None:
+            items['rooms'] = int(rooms)
+        
         apartment_area = additional.get('Площадь')
         if apartment_area:
-            items['apartment_area'] = int(apartment_area.split('м2')[0].strip())
+            items['apartment_area'] = float(apartment_area.split('м2')[0].strip())
         else:
             items['apartment_area'] = None
-        items['land_area'] = additional.get('Площадь участка')
+
+        items['land_area'] = None
+        land_area = additional.get('Площадь участка')
+        
+        if land_area is not None:
+            items['land_area'] = float(land_area.replace('соток', '').strip())
+            
         items['series'] = additional.get('Серия')
         items['furniture'] = additional.get('Мебель')
         items['renovation'] = additional.get('Состояние')

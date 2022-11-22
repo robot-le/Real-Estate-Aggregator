@@ -1,5 +1,5 @@
 import scrapy
-from ..items import HousingItems
+from ad_scraper.items import HousingItems
 from datetime import datetime, timedelta
 import re
 
@@ -47,18 +47,24 @@ class DoskaSpider(scrapy.Spider):
         items['parse_datetime'] = datetime.now()
         items['ad_url'] = response.url
         items['address'] = items_dict.get('Адрес')
-        items['rooms'] = items_dict.get('Кол - во комнат')
+        items['rooms'] = None
+        rooms = items_dict.get('Кол - во комнат')
+        if rooms is not None:
+            items['rooms'] = int(rooms.strip())
 
         apartment_area = items_dict.get('Общ . площадь')
 
-        if apartment_area:
-            items['apartment_area'] = int(apartment_area.replace(' кв . м .', ''))
+        if apartment_area is not None:
+            items['apartment_area'] = float(apartment_area.replace(' кв . м .', ''))
         else:
             items['apartment_area'] = None
 
-        items['land_area'] = items_dict.get('Соток')
+        items['land_area'] = None
+        land_area = items_dict.get('Соток')
+        if land_area is not None:
+            items['land_area'] = float(land_area)
+            
         items['series'] = items_dict.get('Серия')
-        # items['additional'] = '\n'.join([f'{key}: {value}' for key, value in items_dict.items()])
         items['additional'] = items_dict
         items['furniture'] = None
         items['renovation'] = None
@@ -81,13 +87,6 @@ class DoskaSpider(scrapy.Spider):
             items['category'] = 'Дом'
         else:
             items['category'] = None
-
-        if ('посуточн' in items['title'].lower() or 
-                'сутк' in items['title'].lower()) or ('посуточн' in items['description'].lower() or 
-                                                          'сутк' in items['description'].lower()):
-            items['daily'] = True
-        else:
-            items['daily'] = None
 
         # months = {
         #     ' Января ':   '.01.',

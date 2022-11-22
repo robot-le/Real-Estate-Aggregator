@@ -3,7 +3,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.settings import Settings
 
 from ad_scraper import settings as scrapers_settings
-from ad_scraper.spiders.lalafo import RealEstateSpider
+from ad_scraper.spiders.doska import DoskaSpider
 
 
 class Command(BaseCommand):
@@ -15,5 +15,5 @@ class Command(BaseCommand):
 
         process = CrawlerProcess(settings=crawler_settings)
 
-        process.crawl(RealEstateSpider)
+        process.crawl(DoskaSpider)
         process.start()

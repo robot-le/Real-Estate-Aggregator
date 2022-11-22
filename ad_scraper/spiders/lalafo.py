@@ -17,7 +17,7 @@ headers = {
 }
 
 
-class RealEstateSpider(scrapy.Spider):
+class LalafoSpider(scrapy.Spider):
     name = 'lalafo'
     allowed_domains = ['lalafo.kg']
     start_urls = [
@@ -55,14 +55,14 @@ class RealEstateSpider(scrapy.Spider):
                 }
             )
 
-        # next_page = data.get('_links').get('next')
-        # if next_page is not None:
-        #     url = 'https://lalafo.kg/api/search/v3/feed/' + next_page.get('href')[8:]
-        #     yield scrapy.Request(
-        #         url=url,
-        #         callback=self.parse_api,
-        #         headers=headers,
-        #     )
+        next_page = data.get('_links').get('next')
+        if next_page is not None:
+            url = 'https://lalafo.kg/api/search/v3/feed/' + next_page.get('href')[8:]
+            yield scrapy.Request(
+                url=url,
+                callback=self.parse_api,
+                headers=headers,
+            )
 
     def parse_details(self, response):
         item = json.loads(response.body)
