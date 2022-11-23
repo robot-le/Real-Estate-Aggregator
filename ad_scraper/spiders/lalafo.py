@@ -2,6 +2,10 @@ from datetime import datetime
 from ad_scraper.items import HousingItems
 import scrapy
 import json
+from ad_scraper.utils import get_usd_rate
+
+
+usd_rate = get_usd_rate()
 
 rent_house_id = 2032
 rent_apartments_id = 2043
@@ -70,8 +74,15 @@ class LalafoSpider(scrapy.Spider):
 
         items['site'] = 'lalafo.kg'
         items['title'] = item.get('title')
-        items['price'] = item.get('price')
         items['currency'] = item.get('currency')
+        items['price_origin'] = item.get('price')
+        items['price_kgs'] = items['price_origin']
+        items['usd_rate'] = usd_rate
+
+        if items['currency'] == 'USD' and items['price_origin'] is not None:
+            items['price_usd'] = items['price_origin']
+            items['price_kgs'] = usd_rate * items['price_origin']
+
         items['description'] = item.get('description')
         items['parse_datetime'] = datetime.now()
         items['ad_url'] = item.get('url')

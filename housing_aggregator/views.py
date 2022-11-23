@@ -4,28 +4,31 @@ from django.views.generic import ListView
 from .models import Ad
 from .filters import *
 from django_filters.views import FilterView
+from django.db import connection
 
 
 # class AdListView(ListView):
 #     paginate_by = 10
 #     model = Ad
 #
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['filter'] = AdFilter(self.request.GET, queryset=Ad.objects.all())
-#         return context
+#     # def get_context_data(self, *, object_list=None, **kwargs):
+#     #     context = super().get_context_data(**kwargs)
+#     #     context['filter'] = AdFilter(self.request.GET, queryset=Ad.objects.all())
+#     #     return context
      
 
 class AdListView(FilterView):
     paginate_by = 10
     model = Ad
-    filterset_fields = ('site',)
+    filterset_class = AdFilter
     template_name = 'housing_aggregator/ad_list.html'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['filter'] = AdFilter(self.request.GET, queryset=Ad.objects.all())
-        return context
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['filter'] = AdFilter(self.request.GET, queryset=Ad.objects.all())
+#         print(connection.queries)
+#         return context
+
     
 def home(request):
     return render(request, 'housing_aggregator/home.html')

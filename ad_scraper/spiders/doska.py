@@ -2,7 +2,10 @@ import scrapy
 from ad_scraper.items import HousingItems
 from datetime import datetime, timedelta
 import re
+from ad_scraper.utils import get_usd_rate
 
+
+usd_rate = get_usd_rate()
 
 class DoskaSpider(scrapy.Spider):
     name = 'doska'
@@ -41,7 +44,15 @@ class DoskaSpider(scrapy.Spider):
 
         items['site'] = 'doska.kg'
         items['currency'] = response.xpath('//span[@itemprop="priceCurrency"]/@content').get()
-        items['price'] = response.xpath('//span[@itemprop="price"]/@content').get()
+        # items['price'] = response.xpath('//span[@itemprop="price"]/@content').get()
+        items['price_origin'] = response.xpath('//span[@itemprop="price"]/@content').get()
+        items['price_kgs'] = response.xpath('//span[@itemprop="price"]/@content').get()
+        items['usd_rate'] = usd_rate
+
+        if items['currency'] == 'USD' and items['price_origin'] is not None:
+            items['price_usd'] = items['price_origin']
+            items['price_kgs'] = usd_rate * items['price_origin']
+        
         items['description'] = ''.join(response.xpath('//div[@itemtype="http://schema.org/Place"]/../../div[2]/span/text()').getall())
         items['title'] = response.xpath('//h1[@class="item_title"]/text()').getall()[-1].strip()
         items['parse_datetime'] = datetime.now()

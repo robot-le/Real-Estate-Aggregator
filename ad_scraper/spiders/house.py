@@ -1,7 +1,10 @@
 from datetime import datetime
 from ad_scraper.items import HousingItems
 import scrapy
+from ad_scraper.utils import get_usd_rate
 
+
+usd_rate = get_usd_rate()
 
 class HouseSpider(scrapy.Spider):
     name = 'house'
@@ -53,7 +56,9 @@ class HouseSpider(scrapy.Spider):
         items['site'] = 'house.kg'
         items['category'] = response.meta.get('category')
         items['title'] =  response.xpath('//title/text()').get()
-        items['price'] = response.xpath('//div[@class="price-som"]/text()').get().replace('сом', '').replace(' ', '')
+        items['price_origin'] = response.xpath('//div[@class="price-som"]/text()').get().replace('сом', '').replace(' ', '')
+        items['price_kgs'] = response.xpath('//div[@class="price-som"]/text()').get().replace('сом', '').replace(' ', '')
+        items['usd_rate'] = usd_rate
         items['currency'] = 'KGS'
         items['description'] = response.meta.get('description')
         items['parse_datetime'] = datetime.now()
