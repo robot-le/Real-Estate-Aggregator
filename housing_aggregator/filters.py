@@ -18,23 +18,18 @@ class AdFilter(filter.FilterSet):
                 }),
             )
 
-    category = filter.ChoiceFilter(
-            empty_label='Всё сразу',
+    category = filter.MultipleChoiceFilter(
             choices=(
                 ('Дом', 'Дом'),
                 ('Квартира', 'Квартира'),
                 ('Комната', 'Комната'),
                 ),
-            widget=forms.Select(attrs={
-                'class': 'form-select',
-                }),
+            widget=forms.CheckboxSelectMultiple(
+                # attrs={
+                #     'class': 'form-check',
+                #     }
+                ),
             )
-
-    # price = filter.RangeFilter(
-    #         widget=RangeWidget(attrs={
-    #             'class': 'form-control',
-    #             }),
-    #         )
 
     price_kgs__gt = filter.NumberFilter(
             field_name='price_kgs',
@@ -72,7 +67,7 @@ class AdFilter(filter.FilterSet):
                 }),
             )
 
-    search = filter.CharFilter(
+    address = filter.CharFilter(
             method='search_filter',
             widget=forms.TextInput(attrs={
                 'class': 'form-control',
@@ -80,7 +75,7 @@ class AdFilter(filter.FilterSet):
             )
 
     def search_filter(self, queryset, name, value):
-        return queryset.filter(Q(title__icontains=value) | Q(description__icontains=value) | Q(additional__icontains=value) | Q(address__icontains=value))
+        return queryset.filter(Q(description__icontains=value) | Q(address__icontains=value))
 
     class Meta:
         model = Ad

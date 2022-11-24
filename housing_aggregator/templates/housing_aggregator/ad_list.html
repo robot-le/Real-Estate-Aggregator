@@ -2,18 +2,14 @@
 {% load housing_aggregator_tags %}
 {% block content %}
 <div class="container p-5">
-  <div class="container p-5 my-5 rounded-2 shadow bg-white">
+  <div class="container p-5 rounded-2 shadow bg-white">
     <form method="get">
       <div class="row">
-        <div class="col">
-          <label for="{{ filter.form.search.id_for_label }}">Поиск</label>
-          {{ filter.form.search }}
-        </div>
-      </div>
-      <div class="row">
         <div class="col-md-6">
-          <label for="{{ filter.form.site.id_for_label }}">С какого сайта?</label>
-          {{ filter.form.site }}
+          <label for="{{ filter.form.address.id_for_label }}">Адрес
+            <i title="Эффективность поиска по адресу зависит от того как введён запрос и как рекламодатель написал адрес. Есть вероятность что система найдёт не все объявления с этим адресом."
+              class="bi bi-question-circle-fill"></i></label>
+          {{ filter.form.address }}
         </div>
         <div class="col-md-6">
           <label for="{{ filter.form.category.id_for_label }}">Что ищем?</label>
@@ -26,6 +22,7 @@
           <div class="input-group">
             {{ filter.form.price_kgs__gt }}
             {{ filter.form.price_kgs__lt }}
+            {{ filter.form.include_none_price }}
           </div>
         </div>
         <div class="col-md-6">
@@ -37,15 +34,16 @@
           Filter for address
         </div>
       </div>
-      <input id="siteNameInput" type="submit" class="btn btn-primary">
-      <a class="btn btn-primary" href="{% url 'rent' %}">Clear All</a>
+      <input id="siteNameInput" type="submit" class="btn btn-success" value="Применить фильтры">
+      <a class="btn btn-primary" href="{% url 'rent' %}">Очистить</a>
     </form>
   </div>
+
   <div class="container p-5 my-5 rounded-2 shadow bg-white">
     <div class="container">
       <ul class="list-group">
         {% for ad in page_obj %}
-          <article class="card my-2">
+          <article class="card my-2 bg-light">
                 <div class="card-body" >
                   <div class="row g-0">
                     <div class="col-md-3">
@@ -91,8 +89,31 @@
                         </div>
                         <div class="col-md-3">
                           <div class="row-md-8">
-                            <p class="text-end fw-bold">{{ ad.price_kgs | floatformat:0}}</p> 
-                          <a href="{{ ad.ad_url }}" class="btn btn-primary btn-sm stretched-link" target="_blank">На страницу объявления</a>
+                            <table class="table table-sm">
+                              <tbody>
+                                <tr>
+                                  <td>Категория</td>
+                                  <td>{{ ad.category }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Цена (сом)</td>
+                                  {% if ad.price_kgs != None %}
+                                    <td>{{ ad.price_kgs | floatformat:0 }}</td>
+                                  {% else %}
+                                    <td>???</td>
+                                  {% endif %}
+                                </tr>
+                                <tr>
+                                  <td>Комнат</td>
+                                  {% if ad.rooms != None %}
+                                    <td>{{ ad.rooms }}</td>
+                                  {% else %}
+                                    <td>???</td>
+                                  {% endif %}
+                                </tr>
+                              </tbody>
+                            </table>
+                          <a href="{{ ad.ad_url }}" class="btn btn-primary btn-sm" target="_blank" style="position: absolute; right: 0; bottom: 0;">Подробнее</a>
                           </div>
                         </div>
                       </div>

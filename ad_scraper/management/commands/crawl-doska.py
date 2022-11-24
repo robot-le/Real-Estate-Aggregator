@@ -7,7 +7,7 @@ from ad_scraper.spiders.doska import DoskaSpider
 
 
 class Command(BaseCommand):
-    help = 'Release spider'
+    help = 'Crawling doska.kg'
 
     def handle(self, *args, **options):
         crawler_settings = Settings()

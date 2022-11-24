@@ -7,7 +7,7 @@ from ad_scraper.spiders.lalafo import LalafoSpider
 
 
 class Command(BaseCommand):
-    help = 'Release spider'
+    help = 'Crawling lalafo.kg'
 
     def handle(self, *args, **options):
         crawler_settings = Settings()

@@ -7,7 +7,11 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+from pathlib import Path
+
 BOT_NAME = 'ad_scraper'
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SPIDER_MODULES = ['ad_scraper.spiders']
 NEWSPIDER_MODULE = 'ad_scraper.spiders'
@@ -99,3 +103,7 @@ AUTOTHROTTLE_ENABLED = True
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+LOG_FILE = f"{BASE_DIR}/ad_scraper/logs/scraper.log"
+# LOG_FILE_APPEND = False

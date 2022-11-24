@@ -60,7 +60,7 @@ class DoskaSpider(scrapy.Spider):
         items['address'] = items_dict.get('Адрес')
         items['rooms'] = None
         rooms = items_dict.get('Кол - во комнат')
-        if rooms is not None:
+        if rooms is not None and rooms.strip().isdigit():
             items['rooms'] = int(rooms.strip())
 
         apartment_area = items_dict.get('Общ . площадь')

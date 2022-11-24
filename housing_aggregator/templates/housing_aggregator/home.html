@@ -1,2 +1,15 @@
 {% extends 'housing_aggregator/base.html' %}
-{% block content %}{% endblock %}
+
+{% block content %}
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <div class="container p-5 my-5 rounded-2 shadow bg-white">
+   <main class="px-3">
+      <h1>Ищете жильё?</h1>
+      <p class="lead">Этот сервис собирает объявления об аренде жилья в Бишкеке с нескольких сайтов объявлений</p>
+      <p class="lead">
+      <a href="{% url 'rent' %}" class="btn btn-lg btn-primary fw-bold">Перейти к поиску</a>
+      </p>
+    </main>
+  </div>
+</div>
+{% endblock %}

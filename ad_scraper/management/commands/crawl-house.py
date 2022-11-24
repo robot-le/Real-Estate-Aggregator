@@ -7,7 +7,7 @@ from ad_scraper.spiders.house import HouseSpider
 
 
 class Command(BaseCommand):
-    help = 'Release spider'
+    help = 'Crawling house.kg'
 
     def handle(self, *args, **options):
         crawler_settings = Settings()

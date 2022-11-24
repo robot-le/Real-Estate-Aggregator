@@ -20,7 +20,7 @@ class Ad(models.Model):
     ad_url = models.URLField(max_length=400)
     # daily = models.BooleanField(null=True)
     address = models.TextField(null=True)
-    additional = models.JSONField()
+    additional = models.JSONField(null=True)
     images = fields.ArrayField(models.URLField(max_length=400))
     rooms = models.IntegerField(null=True)
     apartment_area = models.DecimalField(max_digits=20, decimal_places=2, null=True)
