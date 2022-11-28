@@ -1,4 +1,3 @@
-housing_aggregator/migrations
 *.pyc
 db.sqlite3
 
