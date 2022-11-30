@@ -2,3 +2,8 @@
 db.sqlite3
 
 ad_scraper/logs/scraper.log
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
