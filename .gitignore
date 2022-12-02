@@ -1,7 +1,7 @@
 *.pyc
 db.sqlite3
 
-ad_scraper/logs/scraper.log
+ad_scraper/logs/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

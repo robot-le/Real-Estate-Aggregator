@@ -8,6 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from pathlib import Path
+import os
 
 BOT_NAME = 'ad_scraper'
 
@@ -104,6 +105,10 @@ AUTOTHROTTLE_ENABLED = True
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+# LOG_FILE = f"{BASE_DIR}/ad_scraper/logs/scraper.log"
+if bool(os.environ.get('DJANGO_DEBUG', True)):
+    LOG_FILE = f"{BASE_DIR}/ad_scraper/logs/scraper.log"
+else:
+    LOG_FILE = f"/var/log/ad_scraper.log"
 
-LOG_FILE = f"{BASE_DIR}/ad_scraper/logs/scraper.log"
 # LOG_FILE_APPEND = False
