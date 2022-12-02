@@ -12,10 +12,16 @@ table_name = 'ads'
 class DjangoAdPipeline:
 
     def __init__(self):
-        hostname = os.environ.get('HOSTNAME')
-        username = os.environ.get('USERNAME')
-        password = os.environ.get('PASSWORD')
-        database = os.environ.get('DATABASE')
+        # hostname = os.environ.get('HOSTNAME')
+        # username = os.environ.get('USERNAME')
+        # password = os.environ.get('PASSWORD')
+        # database = os.environ.get('DATABASE')
+
+        hostname = os.environ['RDS_HOSTNAME']
+        username = os.environ['RDS_USERNAME']
+        password = os.environ['RDS_PASSWORD']
+        database = os.environ['RDS_DB_NAME']
+
 
         self.connection = psycopg2.connect(
                         host=hostname,
