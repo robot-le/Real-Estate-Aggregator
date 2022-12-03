@@ -1,6 +1,6 @@
 # [Real Estate Aggregator](http://django-env.eba-n3zgzxbv.us-west-2.elasticbeanstalk.com/)
 
-Service for gathering real estate listings to one place.
+Service for gathering real estate listings in one place.
 
 ### Technologies:
 - Django;
