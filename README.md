@@ -1,6 +1,6 @@
 # [Real Estate Aggregator](http://django-env.eba-n3zgzxbv.us-west-2.elasticbeanstalk.com/)
 
-Service for gathering real estate listings in one place.
+The point of the project is to make finding an apartment for rent easier. This service extracts data with web scrapers from several rental advertisement sources and stores these ads in one place, so you don't need to search for rent on tons of websites.
 
 ### Technologies:
 - Django;
